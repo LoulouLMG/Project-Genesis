@@ -1,0 +1,12 @@
+{
+  "name"         : "project-genesis",
+  "version"      : "0.0.1",
+  "description"  : "MMO space opera browser game.",
+  "main"         : "server.js",
+  "author"       : "Solofeed",
+  "dependencies" : {
+    "express"    : "~4.12.3",
+    "mysql"      : "~2.6.2",
+    "bower"      : "~1.4.1"
+    }
+}
