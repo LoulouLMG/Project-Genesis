@@ -6,7 +6,8 @@
 	'use strict';
   	angular.module('genesis', [
   		'ngRoute',
-      'genesis.views'
+      'genesis.views',
+      'genesis.services'
   	])
   	.config(['$routeProvider', routage])
   	.run(['$location', main])

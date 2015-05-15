@@ -7,7 +7,7 @@
 	'use strict';
 	angular.module('genesis.views.game')
 	.config(routage)
-	.controller('gameCtrl', gameCtrl);
+	.controller('gameCtrl', ['location', gameCtrl]);
 
 	function routage($routeProvider){
 		var game = {};
@@ -17,8 +17,10 @@
 		$routeProvider.when('/game', game);
 	}
 
-	function gameCtrl(){
+	function gameCtrl(location, $location){
 		console.log('game');
 		var game = this;
+
+		game.goHome = location.goHome;
 	}
 })();

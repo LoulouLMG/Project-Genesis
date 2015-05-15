@@ -7,7 +7,7 @@
 	'use strict';
 	angular.module('genesis.views.login')
 	.config(routage)
-	.controller('loginCtrl', loginCtrl);
+	.controller('loginCtrl', ['location',loginCtrl]);
 
 	function routage($routeProvider){
 		var login = {};
@@ -17,8 +17,10 @@
 		$routeProvider.when('/login', login);
 	}
 
-	function loginCtrl(){
+	function loginCtrl(location){
 		console.log('login');
 		var login = this;
+
+		login.goHome = location.goHome;
 	}
 })();

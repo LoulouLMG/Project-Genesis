@@ -13,4 +13,13 @@
 	angular.module('genesis.views.game', ['ngRoute']);
 	/* Module de login */
 	angular.module('genesis.views.login', ['ngRoute']);
+
+	// Services
+	angular.module('genesis.services', [
+		'genesis.services.location'
+	]);
+	/* Module de la gestion des liens internes */
+	angular.module('genesis.services.location', ['ngRoute']);
+
+
 })();
