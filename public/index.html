@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html ng-app="mainApp" class='no-js'>
+<html ng-app="genesis" class='no-js'>
     <meta charset="UTF-8">
     <head>
+    	<!-- Chargement des librairies angular -->
         <script src="/bower_components/angular/angular.js"></script>
         <script src="/bower_components/angular-resource/angular-resource.js"></script>
         <script src="/bower_components/angular-route/angular-route.js"></script>
         <script src="/bower_components/angular-material/angular-material.js"></script>
     </head>
-
     <title>Project Genesis</title>
     <body>
+    	<div id="wrapper">
+    		<div id="contenu" ng-view></div>
+    	</div>
+        <!-- Scripts -->
+        <script src="modules.js"></script>
+        <script src="/components/login/login.js"></script>
+        <script src="/components/game/game.js"></script>
+        <script src="/components/home/home.js"></script>
         <!-- Main script -->
         <script src="core.js"></script>
     </body>

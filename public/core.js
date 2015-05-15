@@ -4,14 +4,15 @@
  */
 (function() {
 	'use strict';
-  	angular.module('mainApp', [
+  	angular.module('genesis', [
   		'ngRoute',
+      'genesis.views'
   	])
   	.config(['$routeProvider', routage])
   	.run(['$location', main])
 
-  	function routage (route) {
-  		route.otherwise({redirectTo: '/'});
+  	function routage ($routeProvider) {
+  		$routeProvider.otherwise({redirectTo: '/home'});
   	}
   	function main (location) {
   		console.log('Client lancé');

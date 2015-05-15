@@ -2,6 +2,6 @@
  * Configuration du serveur
  */
 module.exports = {
-    port     : 9000,
+    port     : 8081,
   	url     : 'localhost'
 };
