@@ -7,7 +7,7 @@
 	'use strict';
 	angular.module('genesis.views.home')
 	.config(routage)
-	.controller('homeCtrl', ['location', homeCtrl]);
+	.controller('homeCtrl', ['locationSvc', homeCtrl]);
 
 	function routage ($routeProvider) {
 		var home = {};
@@ -17,14 +17,12 @@
 		$routeProvider.when('/home', home);
 	}
 
-	function homeCtrl(location, $location){
+	function homeCtrl(location){
 		console.log('home');
 		var home = this;
 
 		home.goLogin = location.goLogin;
 
-		home.goGame = function() {
-			location.goGame($location);
-		}
+		home.goGame = location.goGame;
 	}
 })();

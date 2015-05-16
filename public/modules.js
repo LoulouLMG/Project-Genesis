@@ -16,10 +16,19 @@
 
 	// Services
 	angular.module('genesis.services', [
-		'genesis.services.location'
+		'genesis.services.location',
+		'genesis.services.session',
+		'genesis.services.auth',
+		'genesis.services.error'
 	]);
 	/* Module de la gestion des liens internes */
 	angular.module('genesis.services.location', ['ngRoute']);
+	/* Gestion de la session de l'utilisateur */
+	angular.module('genesis.services.session', []);
+	/* Module d'identification */
+	angular.module('genesis.services.auth', []);
+	/* Module d'erreur */
+	angular.module('genesis.services.error', []);
 
 
 })();

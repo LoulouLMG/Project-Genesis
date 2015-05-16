@@ -6,9 +6,9 @@
 	* Gère les liens internes de l'application
 	*/
 	angular.module('genesis.services.location')
-	.service('location', location);
+	.service('locationSvc', locationSvc);
 
-	function location($location){
+	function locationSvc($location){
 		var location = this;
 
 		location.goHome = function() {
