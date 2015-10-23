@@ -1,0 +1,27 @@
+<h1> Login </h1>
+<form name="form" ng-submit="login.connexion(form)">
+	<!-- Champ 'Email / Pseudo' -->
+	<p>
+		<input type="text" name="username" ng-model="login.credentials.username"
+			placeholder="Username" ng-trim="true" ng-disabled="login.loading" required>
+	</p>
+	<!-- Champ 'Mot de Passe' -->
+	<p>
+		<input type="password" name="mdp" ng-model="login.credentials.password" 
+			placeholder="Mot de passe" ng-trim="false" ng-disabled="login.loading" required/>
+	</p>
+	<!-- rememberme -->
+	<p>
+		<label for="rememberme">
+			<input type="checkbox" name="rememberme" ng-disabled="login.loading"
+				ng-model="login.credentials.rememberme"/>
+			<span>Se souvenir de moi</span>
+		</label>
+	</p>
+	<p>
+		<input type="submit" value="Connexion" ng-disabled="login.loading"/>
+	</p>
+</form>
+<div>
+	<button type="radio" ng-click="login.goHome()">Retour</button>
+</div>

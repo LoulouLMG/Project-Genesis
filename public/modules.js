@@ -30,5 +30,6 @@
 	/* Module d'erreur */
 	angular.module('genesis.services.error', []);
 
-
+	// constantes
+	angular.module('genesis.constantes', []);
 })();

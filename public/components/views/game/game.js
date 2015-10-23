@@ -11,9 +11,10 @@
 
 	function routage($routeProvider){
 		var game = {};
-		game.templateUrl = '/components/game/game.html';
+		game.templateUrl = '/components/views/game/game.html';
 		game.controller = 'gameCtrl';
 		game.controllerAs = 'game';
+		game.requiresLogin = true;
 		$routeProvider.when('/game', game);
 	}
 

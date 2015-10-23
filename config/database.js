@@ -5,5 +5,6 @@ module.exports = {
     host     : 'localhost',
   	user     : 'root',
   	password : '',
-  	database : 'project_genesis'
+  	database : 'project_genesis',
+  	protocol : 'mysql'
 };

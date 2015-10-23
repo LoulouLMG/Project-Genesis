@@ -1,34 +1,39 @@
 (function() {
         // load the todo model
-        //var Todo = require('./models/todo');
         var path = require('path');
-        // expose the routes to our app with module.exports
+        var express  = require('express');
+        var api = express.Router();
+        var jwt = require('express-jwt');
+        
         module.exports = function(app) {
 
+        var jwtCheck = jwt({ /* secret :D */});
+
         // api ===========================================================================
-        // get all todos
-        app.get('/api/todos', function(req, res) {
 
-            // ...
+        // jwt middleware to verify a token
+        api.use(jwtCheck);
+
+        api.get('/', function(req, res) {
+                res.json( { message:'Bienvenue sur l\'API !'} );  
         });
 
-        // create todo and send back all todos after creation
-        app.post('/api/todos', function(req, res) {
-
-            // ...
-
+        api.get('/users', function(req, res) {
+            req.db.models.user.find(function(error, users){
+                if(error){
+                    res.send(error);
+                } else {
+                   res.json(users);  
+                }
+            });
         });
 
-        // delete a todo
-        app.delete('/api/todos/:todo_id', function(req, res) {
-
-            // ...
-
-        });
-
+        app.use('/api', api);
+        
         // application =================================================================
         app.get('*', function(req, res) {
-            // load the single view file (angular will handle the page changes on the front-end)
+            // load the single view file (angular will handle the page changes on the
+            // front-end)
             res.sendFile(path.join(__dirname, '../public', 'index.html'));
         });
     };

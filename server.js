@@ -3,62 +3,44 @@
  * @author Solofeed
  */
 (function(){
+
     // Mise en place des variables d'exécution ======================================
-    var express  = require('express');                          
-    var mysql = require('mysql');
+    var express  = require('express');
+    //var response = require('./app/response');
     /* Chargement de la configuration de la base de donnée*/
     var databaseConfig = require('./config/database');
     /* Récupération des variables de configuration du serveur */
     var config = require('./config/config');
+    /* object relation mapping */
+    var orm = require('orm');
+    
 
-    /* Création de l'application w/ express */
     var app = express();
 
-    // Configuration =================================================================
+    // Middlewares ==================================================================
+    require('./config/environnement')(app, express);
+
     /* Connexion à la base de donnée MySQL */
-    var database = mysql.createConnection(databaseConfig);
-    /* Localisation du dossier public pour les utilisateurs */
-    app.use(express.static(__dirname + '/public'));    
+    app.use(orm.express(databaseConfig, {
+        define: function (db, models, next) {
+            db.load("./app/models/models", function(error){
+                if(error){
+                    throw error;
+                    db.sync();
+                }
+            });
+            next();
+        }
+    }));
+
 
     // Chargement des routes =========================================================
     require('./app/routes')(app);
 
-    // Configuration du port et lancement du serveur =================================
-    app.listen(config.port);
-    
+    /* Configuration du port et lancement du serveur */
+    app.listen(config.port || 8080);
 
-    /// error handlers ===============================================================
-    // development error handler
-    // will print stacktrace
-    /*
-    if (app.get('env') === 'DEV') {
-        app.use(function(err, req, res, next) {
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error: err
-            });
-        });
-    }
-
-    // production error handler
-    // no stacktraces leaked to user
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: {}
-        });
-    });
-
-    /// catch 404 and forwarding to error handler
-    app.use(function(req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });*/
-
-    console.log("Serveur lancé sur le port " + config.port); 
+    console.log("Serveur lancé sur le port " + config.port || 8080);
 })();
 
     
