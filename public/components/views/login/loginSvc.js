@@ -7,21 +7,28 @@
     .service('loginSvc', [
         '$http',
         'configEnv',
+        'auth',
         'errorSvc',
         loginSvc]);
 
 
-    function loginSvc($http, constantes, error){
+    function loginSvc($http, constantes, auth, error){
 
         var service = this;
+        
+        service.signin = function(credentials, success, error){
+            auth.signin({
+                connection: 'Username-Password-Authentication',
+                username: credentials.username,
+                password: credentials.password,
+                authParams: {
+                    scope: 'openid name email'
+                }
+            }, success, error);
+        }
 
-        /**
-         * Envoie une requete POST au serveur nodeJS qui contient les indentifiants de l'utilisateur
-         * @param {Object} certificat 
-         */
-        service.connexion = function(certificat, success, error){
-            return $http.post(constantes.BACKEND_URL + '/api/authenticate', certificat)
-                .then(success, error);
+        service.signout = function(){
+            
         }
     }
 })();

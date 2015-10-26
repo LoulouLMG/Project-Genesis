@@ -1,0 +1,17 @@
+<h1>Dashboard</h1>
+<div>
+	<p>Bienvenue <span ng-bind="::dashboard.getProfile().nickname"></span></p>
+	<img ng-src="{{ dashboard.getProfile().picture }}">
+</div>
+
+<div>
+	<fieldset>
+		<h2>Test WebSocket</h2>
+		<p ng-bind="'Statut : '"></p>
+		<p ng-bind="'Ici le flux des events de la socket'"></p>
+	</fieldset>
+</div>
+
+<div>
+	<button type="radio" ng-click="dashboard.goHome()">Retour</button>
+</div>

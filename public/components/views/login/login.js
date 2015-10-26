@@ -10,8 +10,8 @@
 	.controller('loginCtrl', [
 		'locationSvc',
 		'loginSvc',
-		'auth',
 		'store',
+		'userProxy',
 		loginCtrl
 	]);
 
@@ -24,47 +24,35 @@
 		$routeProvider.when('/login', login);
 	}
 
-	function loginCtrl(location, loginSvc, auth, store){
+	function loginCtrl(location, loginSvc, store, User){
 		console.log('login');
 		var login = this;
-
 		login.loading = false;
-		// Variables =======================================================
+		// Variables ===============================================================
 		login.credentials = {};
 		login.credentials.rememberme = true;
 
-		// Fonctions publiques =============================================
+		// Fonctions publiques =====================================================
 		login.goHome = location.goHome;
 
 		login.connexion = function(form){
-			console.info("Connexion ...");
-			console.log(login.credentials);
-			login.loading = true;
-			console.log(auth);
-			auth.signin({
-		      	connection: 'Username-Password-Authentication',
-		      	username: login.credentials.username,
-		      	password: login.credentials.password,
-		      	authParams: {
-		        	scope: 'openid name email'
-		      	}
-		    }, onLoginSuccess, onLoginFailed);
+			if(form.$valid){
+				login.loading = true;
+				loginSvc.signin(login.credentials, onLoginSuccess, onLoginFailed);
+			}
 		}
 
-		// Fonctions internes ==============================================
+		// Fonctions internes ======================================================
 		function onLoginSuccess(profile, token) {
-			 login.loading = false;
-			console.info('LOGGED !');
+			login.loading = false;
 		    store.set('profile', profile);
 		    store.set('token', token);
-		    location.goGame();
-		   
+		    User.update();
+		    location.goDashboard();
 		}
 
-		function onLoginFailed(test) {
+		function onLoginFailed() {
 			login.loading = false;
-			console.info('NOT LOGGED !');
-			console.log(test);
 		}
 	}
 })();

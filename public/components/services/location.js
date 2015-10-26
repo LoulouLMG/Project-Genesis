@@ -22,5 +22,9 @@
 		location.goGame = function() {
 			$location.path('/game');
 		}
+
+		location.goDashboard = function() {
+			$location.path('/dashboard');
+		}
 	}
 })();

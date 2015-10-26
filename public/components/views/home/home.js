@@ -30,6 +30,12 @@
 
 		home.goGame = location.goGame;
 
+		home.goDashboard = location.goDashboard;
+
+		home.isAuthenticated = function(){
+			return auth.isAuthenticated;
+		}
+
 		home.logout = function(){
 			auth.signout();
 			store.remove('profile');

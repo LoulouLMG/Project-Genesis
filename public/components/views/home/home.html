@@ -1,11 +1,11 @@
 <h1> Home </h1>
 <p> Ceci est la page d'accueil !</p>
-<div>
+<div ng-if="!home.isAuthenticated()">
 	<button type="radio" ng-click="home.goLogin()">Se Connecter</button>
 </div>
-<div>
-	<button type="radio" ng-click="home.goGame()">Jouer</button>
+<div ng-if="home.isAuthenticated()">
+	<button type="radio" ng-click="home.goDashboard()">Dashboard</button>
 </div>
-<div>
+<div ng-if="home.isAuthenticated()">
 	<button type="radio" ng-click="home.logout()">Deconnexion</button>
 </div>
