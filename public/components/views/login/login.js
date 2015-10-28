@@ -6,7 +6,6 @@
 (function () {
 	'use strict';
 	angular.module('genesis.views.login')
-	.config(routage)
 	.controller('loginCtrl', [
 		'locationSvc',
 		'loginSvc',
@@ -14,15 +13,6 @@
 		'userProxy',
 		loginCtrl
 	]);
-
-	// Configuration de la route et attribution du controller à la vue
-	function routage($routeProvider){
-		var login = {};
-		login.templateUrl = '/components/views/login/login.html';
-		login.controller = 'loginCtrl';
-		login.controllerAs = 'login';
-		$routeProvider.when('/login', login);
-	}
 
 	function loginCtrl(location, loginSvc, store, User){
 		console.log('login');

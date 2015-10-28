@@ -6,21 +6,12 @@
 (function () {
 	'use strict';
 	angular.module('genesis.views.home')
-	.config(routage)
 	.controller('homeCtrl', [
 		'locationSvc',
 		'auth',
 		'store',
 		homeCtrl
 	]);
-
-	function routage ($routeProvider) {
-		var home = {};
-		home.templateUrl = '/components/views/home/home.html';
-       	home.controller = 'homeCtrl';
-       	home.controllerAs = 'home';
-		$routeProvider.when('/home', home);
-	}
 
 	function homeCtrl(location, auth, store){
 		console.log('home');

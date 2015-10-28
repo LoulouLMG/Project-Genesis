@@ -27,15 +27,13 @@
   	.run([
       '$rootScope',
       'auth',
-      'store',
-      'jwtHelper',
       '$location',
-      '$route',
+      'jwtHelper',
+      'store',
       main]);
 
   	function routage ($routeProvider, $httpProvider, authProvider, jwtInterceptorProvider,
       $locationProvider) {
-  		$routeProvider.otherwise({redirectTo: '/home'});
       /**
        * Initialisation du systême d'authentification avec auth0
        */
@@ -46,6 +44,8 @@
         loginUrl: '/login'
       });
 
+      configureAuthVerification($routeProvider);
+      configureRoutes($routeProvider);
 
       jwtInterceptorProvider.tokenGetter = ['store', function(store) {
         return store.get('token');
@@ -54,30 +54,105 @@
       $httpProvider.interceptors.push('jwtInterceptor');
       $locationProvider.hashPrefix('!');
       $locationProvider.html5Mode(true);
-
   	}
 
-  	function main ($rootScope, auth, store, jwtHelper, $location, $route) {
+  	function main ($rootScope, auth, $location, jwtHelper, store) {
       auth.hookEvents();
+      
+      $rootScope.$on('$routeChangeError', function(ev, current, previous, rejection) {
+        if (rejection && rejection.needsAuthentication === true) {
+          console.log('Error : needsAuthentication');
+          var returnUrl = $location.url();
+          $location.path('/login');
+        }
+      });
 
-      $rootScope.$on('$routeChangeStart', function(evt, next, from) {
-        /* Determine if the user can access the next route */ 
+      $rootScope.$on('$locationChangeStart', function() {
         if (!auth.isAuthenticated) {
           var token = store.get('token');
           if (token) {
             if (!jwtHelper.isTokenExpired(token)) {
               auth.authenticate(store.get('profile'), token);
-              //$location.path(next.originalPath);
             } else {
               $location.path('/login');
             }
           }
-        /* Check if the user can access login view *//*
-        } else if(auth.isAuthenticated && next.originalPath == '/login'){
-          evt.preventDefault();
-        }
-        */
         }
       });
-  	}
+  	}  
+
+    function configureAuthVerification($routeProvider){
+      var isLoggedIn = ['$q', 'auth', 'store', 'jwtHelper', function($q, auth, store, jwtHelper) {
+          var deferred = $q.defer();
+          var reject = function(){
+            deferred.reject({ 
+              needsAuthentication: true 
+            });
+          }
+
+          if (!auth.isAuthenticated) {
+            var token = store.get('token');
+            if (token) {
+              if (!jwtHelper.isTokenExpired(token)) {
+                auth.authenticate(store.get('profile'), token);
+                if(auth.isAuthenticated){
+                  deferred.resolve();
+                } else {
+                  reject();
+                }
+              } else {
+                reject();
+              }
+            } else {
+              reject();
+            }
+          } else {
+            deferred.resolve();
+          }
+
+          return deferred.promise;
+        }
+      ];
+
+      $routeProvider.whenAuthenticated = function(path, route){
+        route.resolve = route.resolve || {};
+        angular.extend(route.resolve, { 
+          isLoggedIn: isLoggedIn 
+        });
+        $routeProvider.when(path, route);
+      }
+    }
+
+    function configureRoutes($routeProvider){
+      var login = {
+        templateUrl : '/components/views/login/login.html',
+        controller : 'loginCtrl',
+        controllerAs : 'login'
+      };
+
+      var home = {
+        templateUrl : '/components/views/home/home.html',
+        controller : 'homeCtrl',
+        controllerAs : 'home'
+      };
+
+      var game = {
+        templateUrl : '/components/views/game/game.html',
+        controller : 'gameCtrl',
+        controllerAs : 'game',
+        requiresLogin : true
+      };
+      
+      var dashboard = {
+        templateUrl : '/components/views/dashboard/dashboard.html',
+        controller : 'dashboardCtrl',
+        controllerAs : 'dashboard',
+      };
+
+      $routeProvider.when('/home', home);
+      $routeProvider.when('/login', login);
+      $routeProvider.when('/game', game);
+      $routeProvider.whenAuthenticated('/dashboard', dashboard);
+      $routeProvider.otherwise({redirectTo: '/home'});
+    }
 })();
