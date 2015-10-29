@@ -2,41 +2,30 @@
 	'use strict';
 
 	module.exports = function(io){
-		var allClients = [];
-
-		io.use(function(socket, next){
-	        console.log("Query: ", socket.handshake.query);
-	        // return the result of next() to accept the connection.
-	        var token = socket.handshake.query.token;
-	        if (token) {
-	            return next();
-	        }
-	        // call next() with an Error if you need to reject the connection.
-	        next(new Error('Authentication error'));
-	    });
+		var users = [];
 
 		io.on('connection', function(socket) {
 			var user = null;
 
-			
-    		console.info('User connected');
-	  		console.log('Nb users : ' + allClients.length);
+
 
 		  	socket.on('register', function (userId) {
 		        if (userId !== null) {
-
-		            if (!checkUser(userId, allClients)) {
+		        	user = getUserAlreadyIn(userId);
+		      		if(user){
+		      			user.disconnected = false;
+		      		} else {
 		                user = {
 		                	user_id : userId,
 		                	disconnected : false
 		                };
-
-		                allClients.push(user);
-		            } else {
-		                //timed out, creer nouveau joueur ?
+		                users.push(user);
+		                console.log("A client joined");
+		                console.log(users.length + " client(s) in total.");
 		            }
 		        } else {
-		            //localStorage pas mis , creer nouveau joueur ?
+		        	socket.disconnect();
+		        	console.log("A client tried to join but failed.");
 		        }
 		    });
 
@@ -44,23 +33,30 @@
 		  		user.disconnected = true;
 		        setTimeout(function () {
 		            if (user.disconnected) {
-		            	user = null;
-		            	console.info('User disconnected');
-		      			allClients.splice(allClients.indexOf(user), 1);
-		      			console.log('Nb users : ' + allClients.length);
+		            	var userToRemove = removeUser(user.user_id);
+		            	console.log("A client left");
+		                console.log(users.length + " client(s) in total.");
+		                userToRemove = undefined;
 		            }
 		        }, 5000);
 		  	});
 		});
-	}
 
-	function checkUser = function(userId, users){
-		var result = false;
-		for(var i = 0; i < users.length; i++ ){
-			if(userId == users[i].user_id){
-				return true;
+		function getUserAlreadyIn(id){
+			for(var i = 0; i < users.length; i++ ){
+				if(id == users[i].user_id){
+					return users[i];
+				}
+			}
+			return false;
+		}
+
+		function removeUser(id){
+			for(var i = 0; i < users.length; i++ ){
+				if(id == users[i].user_id){
+					return users.splice(i, 1);
+				}
 			}
 		}
-		return result;
 	}
 })();

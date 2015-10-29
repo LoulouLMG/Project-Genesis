@@ -33,7 +33,7 @@
 				socket = io("http:" + env.BACKEND_URL + '/', { 
 					query: "token=" + profile.user_id
 				});
-				//socket.emit('register', profile.user_id);
+				socket.emit('register', profile.user_id);
 			} 
 		}
 
