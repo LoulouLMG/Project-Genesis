@@ -27,7 +27,7 @@
 		/* */
 		contenu.update = function(){
 			profile = angular.copy(store.get('profile'));
-			if(socket == null){
+			if(socket == null && profile && profile.user_id){
 				socket = io();
 				socket.emit('register', profile.user_id);
 			} 

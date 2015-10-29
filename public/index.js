@@ -30,6 +30,7 @@
       '$location',
       'jwtHelper',
       'store',
+      'userProxy',
       main]);
 
   	function routage ($routeProvider, $httpProvider, authProvider, jwtInterceptorProvider,
@@ -56,7 +57,8 @@
       $locationProvider.html5Mode(true);
   	}
 
-  	function main ($rootScope, auth, $location, jwtHelper, store) {
+  	function main ($rootScope, auth, $location, jwtHelper, store, userProxy) {
+      userProxy.update();
       auth.hookEvents();
       
       $rootScope.$on('$routeChangeError', function(ev, current, previous, rejection) {
