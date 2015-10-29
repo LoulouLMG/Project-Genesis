@@ -7,10 +7,12 @@
 	angular.module('genesis.proxy')
 	.factory('userProxy', [
 		'store',
+		'configEnv',
+		'auth',
 		userProxy
 	]);
 
-	function userProxy(store){
+	function userProxy(store, env, auth){
 		var contenu = {};
 		
 		// Variables ============================================================
@@ -27,9 +29,11 @@
 		/* */
 		contenu.update = function(){
 			profile = angular.copy(store.get('profile'));
-			if(socket == null && profile && profile.user_id){
-				socket = io();
-				socket.emit('register', profile.user_id);
+			if(socket == null && profile && profile.user_id && auth.isAuthenticated){
+				socket = io("http:" + env.BACKEND_URL + '/', { 
+					query: "token=" + profile.user_id
+				});
+				//socket.emit('register', profile.user_id);
 			} 
 		}
 
