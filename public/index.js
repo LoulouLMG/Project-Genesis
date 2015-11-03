@@ -76,7 +76,8 @@
             if (!jwtHelper.isTokenExpired(token)) {
               auth.authenticate(store.get('profile'), token);
             } else {
-              $location.path('/login');
+              store.remove('profile');
+              store.remove('token');
             }
           }
         }
