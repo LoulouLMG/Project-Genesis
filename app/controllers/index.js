@@ -4,10 +4,14 @@ var express = require('express');
 var router = express.Router();
 
 
-router.use('/route1', require('./route1'));
-/*
-router.use('/route2', require('./route2'));
-*/
+// routes protegees
+router.use('/api', require('./api'));
+
+// autres routes non protegees
+// router.use('/route1', require('./route1'));
+// router.use('/route2', require('./route2'));
+// router.use('/route3', require('./route3'));
+
 
 router.get('*', function(req, res, next) {
 	/* CORS */
