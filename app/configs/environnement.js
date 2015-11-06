@@ -11,18 +11,6 @@
     	var favicon = require('serve-favicon');
     	var methodOverride = require('method-override');
 
-    	/* Autorisation CORS */
-    	app.all('*', function(req, res, next) {
-		  	res.header("Access-Control-Allow-Origin", "*");
-		  	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-		  	res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
-		  	if (req.method == 'OPTIONS') {
-		    	res.status(200).end();
-		  	} else {
-		    	next();
-		    }
-		});
-
 		/* Localisation du dossier public pour les utilisateurs */
     	app.use(express.static(__dirname + '../../../public'));
     	app.use(favicon(__dirname + '../../../public/favicon.ico'));
