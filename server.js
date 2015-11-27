@@ -4,16 +4,18 @@
  */
 (function(){
     // Mise en place des variables d'exécution ======================================
-    var express  = require('express');
-    var app = express();
-    var server = require('http').createServer(app);
-    /* object relation mapping */
-    var orm = require('orm');
-    /* Récupération des variables de configuration du serveur */
-    var config = require('./app/configs/config');
-    /* Temps réel */
-    var io = require('socket.io')(server);
+    var
+        express  = require('express'),
+        app = express(),
+        server = require('http').createServer(app),
+        /* object relation mapping */
+        orm = require('orm'),
+        /* Récupération des variables de configuration du serveur */
+        config = require('./app/configs/config'),
+        /* Temps réel */
+        io = require('socket.io')(server);
 
+    // Middlewares ==================================================================
     /* Connexion à la base de donnée MySQL */
     app.use(orm.express(config.database, {
         define: function (db, models, next) {
@@ -26,7 +28,8 @@
             next();
         }
     }));
-    // Middlewares ==================================================================
+
+
     require('./app/configs/environnement')(app, express);
 
     //app.use(require('./middlewares'));
